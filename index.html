@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>主页</title>
+    <link rel="stylesheet" type="text/css" href="lib/mui/css/mui.css">
+    <link rel="stylesheet" type="text/css" href="lib/fontAwesome/css/font-awesome.css">
+    <link rel="stylesheet/less" href="less/index.less">
+    <script src="lib/less/less.js"></script>
+</head>
+
+<body>
+    <!-- 头部区域 -->
+    <header id="header">
+        <!-- <div class="header-logo">
+            <img src="./images/header_logo.png" alt="">
+        </div> -->
+        <div class="header-back">
+            <span class="fa fa-angle-left"></span>
+        </div>
+        <div class="header-title">
+            <span>省钱控-最新优惠</span>
+        </div>
+        <div class="header-app">
+            <img class="header-app" src="./images/header_app.png" alt="">
+        </div>
+    </header>
+    <!-- 搜索区域 -->
+    <div class="search">
+        <div class="input-search">
+            <input type="search" placeholder="请输入你想比价的商品" >
+        </div>
+        <div class="input-btn">
+            <input type="button" value="搜索">
+        </div>
+    </div>
+    
+    <div style="height:700px"></div>
+    <footer id="footer">
+        <div class="footer-nav">
+            <a href="#" class="footer-login bor-r">登录</a>
+            <a href="#" class="footer-registe bor-r">注册</a>
+            <a href="#" class="return-top ">
+                <img src="http://www.zuyushop.com/wap/images/top.jpg">返回顶部</a>
+        </div>
+        <div class="footer-info">
+            <p>
+                <a href="#" class="download">手机APP下载</a>
+                <a href="#" class="mobile">慢慢买手机版</a>
+                -- 掌上比价平台
+            </p>
+            <p>m.manmanbuy.com</p>
+        </div>
+    </footer>
+    <script id="indexMenuTpl" type="text/html">
+        {{each result value}}
+            <div class="mui-col-xs-3">
+                <a href="{{value.titlehref}}" title="">
+                    <!-- 默认默认不能直接解析一个富文本 标签之类富文本  如果要解析富文本加一个@符号即可-->
+                    {{@value.img}}
+                    <p>{{value.name}}</p>
+                </a>
+            </div>
+        {{/each}}
+    </script>
+    <script id="discountProductTpl" type="text/html">
+        {{each result value}}
+             <li>
+                <a href="#">
+                    <div class="left">
+                        {{@value.productImgSm}}
+                    </div>
+                    <div class="right">
+                        <p class="product-name">
+                            {{value.productName}} 
+                            <span>{{value.productPinkage}}</span>
+                        </p>
+                        <div class="product-from">
+                            {{value.productFrom}} | {{value.productTime}}
+                            <i class="icon-common"></i>
+                            <span>{{value.productComCount.replace('有','').replace('人评论','')}}</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        {{/each}}
+    </script>
+    <footer id="footer"></footer>
+    <script src="lib/mui/js/mui.js"></script>
+    <script src="lib/zepto/zepto.min.js"></script>
+    <script src="lib/artTemplate/template-web.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/base.js"></script>
+</body>
+
+</html>

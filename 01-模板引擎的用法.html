@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div>
+		
+	</div>
+	<script type="text/html" id="studentTpl">
+		<!-- 调用模板传入的对象里的属性的值是普通值  直接使用 -->
+		<p>名称: <span>{{name}}</span></p>
+		<p>年龄： <span>{{age}}</span></p>
+		<p>分数： 
+			<ul>
+				<!-- 如果调用模板传入对象的属性的值是数组 要遍历 数组名是什么就each什么-->
+				<!-- score[i] == value -->
+				{{each score value index}}
+					<li>第{{index+1}}次分数： <sapn>{{value}}</sapn></li>
+				{{/each}}
+			</ul>
+		</p>
+	</script>
+	<script src="lib/artTemplate/template-web.js"></script>
+	<script>
+		var obj = {
+			name:'张三',
+			age:20,
+			score:[100,90,80,70,60,50,40]			
+		}
+		var arr = [100,90,80,70,60,50,40];	
+		console.log(obj.name);
+		console.log(obj.age);
+		for (var i = 0; i < obj.score.length; i++) {
+			console.log(obj.score[i]);
+		}
+		// 如果数据已经是对象就不用包装
+		var html = template('studentTpl',obj);
+		// 如果不是对象就需要包装成对象
+		// var html = template('studentTpl',{'score':arr});
+		console.log(html);
+		document.querySelector('div').innerHTML = html;
+	</script>
+</body>
+</html>
