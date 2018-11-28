@@ -161,7 +161,7 @@ li {
   color: #d7d7d7;
 }
 body {
-  padding: .45rem 0 0;
+  padding: .44rem 0 0;
 }
 #header {
   background-color: #fd4a64;
@@ -204,9 +204,21 @@ body {
   color: #fff;
   line-height: .28rem;
 }
-#header .header-app .btn-down {
+#header .btn-down {
+  position: absolute;
   margin-left: .05rem;
   font-size: .24rem;
+  color: #fff;
+  right: -20px;
+  top: 3px;
+}
+#header .btn-menu {
+  color: #fff;
+}
+#header #title {
+  height: .28rem;
+  text-align: center;
+  position: relative;
 }
 /* 分类区域 */
 #classify {
@@ -257,6 +269,14 @@ body {
   line-height: .25rem;
   color: #fd4a64;
   border-radius: .02rem;
+}
+.mask {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 980;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: none;
 }
 /* 热销区域 */
 #sell {
@@ -458,4 +478,23 @@ body {
   line-height: .28rem;
   color: #fff;
   border-radius: .05rem;
+}
+#keep {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  background-color: #666;
+}
+#keep .spinner {
+  width: 100%;
+  height: 100%;
+}
+#keep .spinner img {
+  width: 60%;
+  margin: auto;
+  margin-left: .8rem;
+  margin-top: 2rem;
 }

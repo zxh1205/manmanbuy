@@ -204,9 +204,21 @@ body {
   color: #fff;
   line-height: .28rem;
 }
-#header .header-app .btn-down {
+#header .btn-down {
+  position: absolute;
   margin-left: .05rem;
   font-size: .24rem;
+  color: #fff;
+  right: -20px;
+  top: 3px;
+}
+#header .btn-menu {
+  color: #fff;
+}
+#header #title {
+  height: .28rem;
+  text-align: center;
+  position: relative;
 }
 /* 分类区域 */
 #classify {

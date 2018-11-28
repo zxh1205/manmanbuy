@@ -8,7 +8,8 @@ $(function () {
     sell.sellData();
     sell.getBaiCaiJiaProduct();
     sell.BaiCaiScroll();
-    sell.sellStop();
+    // sell.sellStop();
+    sell.sellMask();
 })
 
 var Sell = function (titleid) {
@@ -23,6 +24,16 @@ Sell.prototype = {
         var that = this;
         $.ajax({
             url: "http://localhost:9090/api/getbaicaijiatitle",
+            // ajax发送请求之前的回调函数
+            beforeSend: function() {
+                // 请求之前show显示加载中效果 
+                $('#keep').show();
+            },
+            // ajax请求完成后的回调函数
+            complete: function() {
+                // 请求完成后hide隐藏加载中效果
+                $('#keep').hide();
+            },
             success: function (data) {
                 var html = template('sellTitleTpl', {
                     result: data.result,
@@ -45,6 +56,7 @@ Sell.prototype = {
                 $('.baicai-ul').html(html);
             });
             $(ts).addClass('active').siblings().removeClass('active');
+            $('.btn-menu').html($(ts).children().html());
         });
     },
 
@@ -56,6 +68,15 @@ Sell.prototype = {
             data: {
                 titleid: that.titleid || 0
             },
+            beforeSend: function() {
+                // 请求之前show显示加载中效果 
+                $('#keep').show();
+            },
+            // ajax请求完成后的回调函数
+            complete: function() {
+                // 请求完成后hide隐藏加载中效果
+                $('#keep').hide();
+            },
             success: function(data) {
                 callback(data);
             }
@@ -66,11 +87,13 @@ Sell.prototype = {
 
     sellData: function(){
         var that = this;
+        var title = getQueryString('title') || '全部';
         that.refreshSell(function(data){
             var html = template('sellCommodityTpl', {
                 result: data.result,
             })
             $('.baicai-ul').html(html);
+            $('.btn-menu').html(title);
         })
     },
 
@@ -78,13 +101,18 @@ Sell.prototype = {
     BaiCaiScroll: function () {
         var that = this;
         $(window).on('scroll', function () {
-            height = ($('.baicai-ul').height()) * .7;
+            height = ($('.baicai-ul').height()) * .6;
 
             // console.log(window.pageYOffset);
             // console.log(height);
             /* 当页面滚动出去的距离大于ul的高度,就让titleid+1,再请求ajax加载数据 */
             if (window.pageYOffset > height) {
-                that.titleid++;
+                // function resizehandler(){
+                    that.titleid ++;
+                // }
+                // window.onresize=throttle(resizehandler,100,200);
+                // console.log(that.titleid);
+                
                 if (that.titleid < 13) {
                     that.refreshSell(function (data) {
                         var html = template('sellCommodityTpl', {
@@ -104,7 +132,7 @@ Sell.prototype = {
     BaiCaiMenu: function () {
         var that = this;
 
-        $('.btn-menu').on('tap', function () {
+        $('#title').on('tap', function () {
             // $('#classify').toggle();
 
             // if($('.btn-down').is('.fa-angle-up')){
@@ -121,12 +149,14 @@ Sell.prototype = {
             // }
             if (that.num == 1) {
                 $('.btn-down').removeClass('fa-angle-down').addClass('fa-angle-up');
-                $('#classify').show();
                 that.num = 2;
+                $('#classify').show();
+                $('.mask').show();
             } else {
                 $('.btn-down').removeClass('fa-angle-up').addClass('fa-angle-down');
                 $('#classify').hide();
                 that.num = 1;
+                $('.mask').hide();
             }
 
         })
@@ -135,13 +165,21 @@ Sell.prototype = {
     MenuHide: function () {
         var that = this;
         $('.up-menu').on('tap', function () {
-            $('#classify').hide();
-            $('.btn-down').removeClass('fa-angle-up').addClass('fa-angle-down');
-            that.num = 1;
+                $('#classify').hide();
+                $('.btn-down').removeClass('fa-angle-up').addClass('fa-angle-down');
+                that.num = 1;
 
         })
     },
-
+    sellMask: function(){
+        var that = this;
+        $('.mask').on('click',function(){
+            $(this).hide();
+            $('#classify').hide();
+            $('.btn-down').removeClass('fa-angle-up').addClass('fa-angle-down');
+            that.num = 1;
+        });
+    },
     /* 初始化横屏的滑动 */
     BaiCaiSlide: function () {
         mui('.mui-scroll-wrapper').scroll({
@@ -155,13 +193,13 @@ Sell.prototype = {
         });
     },
     /* a点击a链接阻止跳转 */
-    sellStop: function(){
-        $('.baicai-ul').on('tap', '.div4 a', function(e){
-            console.log(1);
-            document.querySelectorAll('a').forEach(a => {a.onclick=(e) => {e.preventDefault()}})
-            return false;
-        })
-    }
+    // sellStop: function(){
+    //     $('.baicai-ul').on('tap', '.div4 a', function(e){
+    //         console.log(1);
+    //         document.querySelectorAll('a').forEach(a => {a.onclick=(e) => {e.preventDefault()}})
+    //         return false;
+    //     })
+    // }
 }
 
 //别人使用正则写的获取url地址栏参数的方法
@@ -174,4 +212,21 @@ function getQueryString(name) {
         return decodeURI(r[2]);
     }
     return null;
-}
+};
+
+/* 函数的节流 */
+function throttle(method,delay,duration){
+    var timer=null, begin=new Date();
+    return function(){
+        var context=this, args=arguments, current=new Date();;
+        clearTimeout(timer);
+        if(current-begin>=duration){
+             method.apply(context,args);
+             begin=current;
+        }else{
+            timer=setTimeout(function(){
+                method.apply(context,args);
+            },delay);
+        }
+    }
+};

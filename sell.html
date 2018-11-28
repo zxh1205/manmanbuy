@@ -19,36 +19,39 @@
             <img src="./images/header_logo.png" alt="">
         </div> -->
         <a href="javascript:history.back();" class="fa fa-arrow-left header-back"></a>
-        <div class="header-app  btn-menu">
-            19块邮<i class="fa fa-angle-down btn-down"></i>
+        <div id="title">
+            <div class="header-app  btn-menu">
+                19块邮
+            </div>
+            <i class="fa fa-angle-down btn-down"></i>
         </div>
         <div class="header-app">
             <a href="baicaijia.html" class="fa fa-home "></a>
         </div>
     </header>
-     <!-- 分类区域 -->
-     <section id="classify">
+    <!-- 分类区域 -->
+    <section id="classify">
         <div class="menu-content">
             <ul class="clearfix">
-                <li class="ui-state-active"><a href="sell.html?url=0">全部</a></li>
-                <li><a href="sell.html?url=1">热销</a></li>
-                <li><a href="sell.html?url=2">9块9包邮</a></li>
-                <li><a href="sell.html?url=3">19块邮</a></li>
-                <li><a href="sell.html?url=4">数码家电</a></li>
-                <li><a href="sell.html?url=5">居家</a></li>
-                <li><a href="sell.html?url=6">美食</a></li>
-                <li><a href="sell.html?url=7">男装</a></li>
-                <li><a href="sell.html?url=8">女装</a></li>
-                <li><a href="sell.html?url=9">鞋包配饰</a></li>
-                <li><a href="sell.html?url=10">文体</a></li>
-                <li><a href="sell.html?url=11">母婴</a></li>
-                <li><a href="sell.html?url=12">美妆</a></li>
-                <li><a href="sell.html?url=1">玩具</a></li>
+                <li class="ui-state-active"><a href="sell.html?url=0&title=全部">全部</a></li>
+                <li><a href="sell.html?url=1&title=热销">热销</a></li>
+                <li><a href="sell.html?url=2&title=9块9包邮">9块9包邮</a></li>
+                <li><a href="sell.html?url=3&title=19块邮">19块邮</a></li>
+                <li><a href="sell.html?url=4&title=数码家电">数码家电</a></li>
+                <li><a href="sell.html?url=5&title=居家">居家</a></li>
+                <li><a href="sell.html?url=6&title=美食">美食</a></li>
+                <li><a href="sell.html?url=7&title=男装">男装</a></li>
+                <li><a href="sell.html?url=8&title=女装">女装</a></li>
+                <li><a href="sell.html?url=9&title=鞋包配饰">鞋包配饰</a></li>
+                <li><a href="sell.html?url=10&title=文体">文体</a></li>
+                <li><a href="sell.html?url=11&title=母婴">母婴</a></li>
+                <li><a href="sell.html?url=12&title=美妆">美妆</a></li>
+                <li><a href="sell.html?url=1&title=玩具">玩具</a></li>
             </ul>
             <span class="up-menu">收起分类</span>
         </div>
-        <div class="mask"></div>
     </section>
+    <div class="mask"></div>
 
     <!-- 搜索区域 -->
     <!-- <div class="search">
@@ -62,24 +65,24 @@
 
     <!-- 超级人气区域 -->
     <section id="moods">
-            <div class="content">
-                <div class="mui-scroll-wrapper">
-                    <div class="mui-scroll">
-                        <!--这里放置真实显示的DOM内容-->
-                        <ul id="sell-ul">
-                            <li class="active"><a href="#" >全部</a></li>
-                            <li><a href="#">热销</a></li>
-                            <li><a href="#">9块邮</a></li>
-                            <li><a href="#">19块邮</a></li>
-                            <li><a href="#">数码家电</a></li>
-                        </ul>
-                    </div>
+        <div class="content">
+            <div class="mui-scroll-wrapper">
+                <div class="mui-scroll">
+                    <!--这里放置真实显示的DOM内容-->
+                    <ul id="sell-ul">
+                        <li class="active"><a href="#">全部</a></li>
+                        <li><a href="#">热销</a></li>
+                        <li><a href="#">9块邮</a></li>
+                        <li><a href="#">19块邮</a></li>
+                        <li><a href="#">数码家电</a></li>
+                    </ul>
                 </div>
             </div>
-    
-        </section>
+        </div>
 
-    
+    </section>
+
+
     <!-- 主体区域 -->
     <main id="main">
         <div class="title">
@@ -123,6 +126,13 @@
             <p>m.manmanbuy.com</p>
         </div>
     </footer>
+    <!-- 遮罩层 -->
+    <div id="keep">
+        <!-- 加载中效果的结构 -->
+        <div class="spinner">
+           <img src="images/cf6b2df14cc86ee59fa3edcbb04764ed.gif" alt="">
+        </div>
+    </div>
     <script id="sellTitleTpl" type="text/html">
         {{each result value index}}
         <li class="sell-li {{red == index ? 'active' : ''}}" data-titleid="{{value.titleId}}" ><a href="#">{{value.title}}</a></li>
