@@ -1,0 +1,37 @@
+@import "baicaijia.less";
+
+#moods {
+    height: .5rem;
+    padding: 0;
+    margin-top: 0;
+    .content {
+        height: .5rem;
+        position: relative;
+        .mui-scroll-wrapper {
+            width: 100%;
+            .mui-scroll {
+                width: 11.7rem;
+            }
+        }
+        ul {
+            li {
+                width: .9rem;
+                height: .5rem;
+                line-height: .5rem;
+                text-align: center;
+                a {
+                    display: block;
+                    color: #333;
+                    
+                }
+                &.active {
+                    border-bottom: 1px solid @baicai-color;
+                    a {
+                        color: @baicai-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
