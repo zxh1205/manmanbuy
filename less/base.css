@@ -1,6 +1,7 @@
 /* 乐淘的主题颜色 */
 /* a的颜色 */
 /* 边框颜色 */
+/* 白菜价主体色 */
 * {
   margin: 0rem;
   padding: 0rem;
@@ -16,6 +17,9 @@ img {
 }
 a {
   color: #5a5a5a;
+}
+li {
+  list-style: none;
 }
 .bor-l {
   border-left: 1px solid #ccc;
