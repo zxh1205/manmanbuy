@@ -20,3 +20,6 @@ function setNowFontSize() {
 }
 // 当触发resize事件的时候,修改根元素的大小
 window.addEventListener('resize', setNowFontSize);
+
+
+

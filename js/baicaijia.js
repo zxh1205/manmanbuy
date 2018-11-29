@@ -6,6 +6,7 @@ $(function () {
     baicai.BaiCaiScroll();
     baicai.MenuHide();
     baicai.sellMask();
+    baicai.answerTop();
 })
 
 var BaiCai = function () {
@@ -23,14 +24,16 @@ BaiCai.prototype = {
             data: {
                 titleid: that.titleid
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 // 请求之前show显示加载中效果 
                 $('#keep').show();
+                that.stop();
             },
             // ajax请求完成后的回调函数
-            complete: function() {
+            complete: function () {
                 // 请求完成后hide隐藏加载中效果
                 $('#keep').hide();
+                that.move();
             },
             success: function (data) {
                 var html = template('BaiCaiCommodityTpl', {
@@ -49,26 +52,19 @@ BaiCai.prototype = {
     BaiCaiScroll: function () {
         var that = this;
         $(window).on('scroll', function () {
-            height= ($('.baicai-ul').height()) * .6;
+            height = ($('.baicai-ul').height()) * .90;
             // console.log(window.pageYOffset);
             // console.log(height);
-        /* 当页面滚动出去的距离大于ul的高度,就让titleid+1,再请求ajax加载数据 */ 
+            /* 当页面滚动出去的距离大于ul的高度,就让titleid+1,再请求ajax加载数据 */
+
             if (window.pageYOffset > height) {
-                // function resizehandler(){
-                    that.titleid++;
-                // }
-                // window.onresize=throttle(resizehandler,100,200);
-                // throttle(resizehandler,100,200);
-                // console.log(that.titleid);
-                
-                
-                if(that.titleid < 13){
+                that.titleid++;
+                if (that.titleid < 13) {
                     that.BaiCaiDate();
-                }else{
+                } else {
                     that.titleid = 1;
                 }
             }
-            
         });
     },
 
@@ -95,9 +91,9 @@ BaiCai.prototype = {
             that.num = 1;
         })
     },
-    sellMask: function(){
+    sellMask: function () {
         var that = this;
-        $('.mask').on('click',function(){
+        $('.mask').on('click', function () {
             $(this).hide();
             $('#classify').hide();
             $('.btn-down').removeClass('fa-angle-up').addClass('fa-angle-down');
@@ -116,23 +112,56 @@ BaiCai.prototype = {
             deceleration: 0.0006, //阻尼系数,系数越小滑动越灵敏
             bounce: true //是否启用回弹
         });
-    }
+    },
+
+    /* 返回顶部的函数 */
+    answerTop: function(){
+        $(window).on('scroll', function(){
+            if(window.pageYOffset > 2500){
+                $('.answer-top').show();
+            }else {
+                $('.answer-top').hide();
+            }
+        })
+        $('.click-up').on('tap',function(){
+            scrollTo(0,0,900);//100毫秒滚动到顶
+        })
+    },
+    // /* 函数的节流 */
+    // throttle: function(fn, delay, mustRunDelay){
+    //     var timer = null;
+    //     var t_start;
+    //     return function(){
+    //         var context = this, args = arguments, t_curr = +new Date();
+    //         clearTimeout(timer);
+    //         if(!t_start){
+    //             t_start = t_curr;
+    //         }
+    //         if(t_curr - t_start >= mustRunDelay){
+    //             fn.apply(context, args);
+    //             t_start = t_curr;
+    //         }
+    //         else {
+    //             timer = setTimeout(function(){
+    //                 fn.apply(context, args);
+    //             }, delay);
+    //         }
+    //     };
+    // },
+    // resizehandler: function () {
+    //     var that = this;
+
+    // }
+    stop: function () {
+        document.body.style.overflow = 'hidden';
+        document.addEventListener("touchmove", mo, false); //禁止页面滑动
+    },
+    move: function () {
+        document.body.style.overflow = ''; //出现滚动条
+        document.removeEventListener("touchmove", mo, false);
+    },
+    
 }
-
-
-/* 函数的节流 */
-function throttle(method,delay,duration){
-    var timer=null, begin=new Date();
-    return function(){
-        var context=this, args=arguments, current=new Date();;
-        clearTimeout(timer);
-        if(current-begin>=duration){
-             method.apply(context,args);
-             begin=current;
-        }else{
-            timer=setTimeout(function(){
-                method.apply(context,args);
-            },delay);
-        }
-    }
-};
+var mo = function (e) {
+    e.preventDefault();
+}
