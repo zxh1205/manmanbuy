@@ -10,6 +10,7 @@ $(function () {
     sell.BaiCaiScroll();
     // sell.sellStop();
     sell.sellMask();
+    sell.answerTop();
 })
 
 var Sell = function (titleid) {
@@ -18,21 +19,22 @@ var Sell = function (titleid) {
 
 Sell.prototype = {
     num: 1,
-
     /* 请求标题 */
     getBaiCaiJiaTitle: function () {
         var that = this;
         $.ajax({
             url: "http://localhost:9090/api/getbaicaijiatitle",
             // ajax发送请求之前的回调函数
-            beforeSend: function() {
+            beforeSend: function () {
                 // 请求之前show显示加载中效果 
                 $('#keep').show();
+
             },
             // ajax请求完成后的回调函数
-            complete: function() {
+            complete: function () {
                 // 请求完成后hide隐藏加载中效果
                 $('#keep').hide();
+
             },
             success: function (data) {
                 var html = template('sellTitleTpl', {
@@ -49,7 +51,7 @@ Sell.prototype = {
         $('#sell-ul').on('tap', '.sell-li', function () {
             var ts = this;
             that.titleid = $(ts).data('titleid');
-            that.refreshSell(function(data){
+            that.refreshSell(function (data) {
                 var html = template('sellCommodityTpl', {
                     result: data.result,
                 })
@@ -68,16 +70,19 @@ Sell.prototype = {
             data: {
                 titleid: that.titleid || 0
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 // 请求之前show显示加载中效果 
                 $('#keep').show();
+
+                that.stop();
             },
             // ajax请求完成后的回调函数
-            complete: function() {
+            complete: function () {
                 // 请求完成后hide隐藏加载中效果
                 $('#keep').hide();
+                that.move();
             },
-            success: function(data) {
+            success: function (data) {
                 callback(data);
             }
         });
@@ -85,10 +90,10 @@ Sell.prototype = {
 
     /* 页面刷新加载的数据 */
 
-    sellData: function(){
+    sellData: function () {
         var that = this;
         var title = getQueryString('title') || '全部';
-        that.refreshSell(function(data){
+        that.refreshSell(function (data) {
             var html = template('sellCommodityTpl', {
                 result: data.result,
             })
@@ -107,12 +112,8 @@ Sell.prototype = {
             // console.log(height);
             /* 当页面滚动出去的距离大于ul的高度,就让titleid+1,再请求ajax加载数据 */
             if (window.pageYOffset > height) {
-                // function resizehandler(){
-                    that.titleid ++;
-                // }
-                // window.onresize=throttle(resizehandler,100,200);
-                // console.log(that.titleid);
-                
+                that.titleid++;
+
                 if (that.titleid < 13) {
                     that.refreshSell(function (data) {
                         var html = template('sellCommodityTpl', {
@@ -120,8 +121,8 @@ Sell.prototype = {
                         })
                         $('.baicai-ul').append(html);
                     });
-                }else{
-                    that.titleid = 0
+                } else {
+                    that.titleid = 1
                 }
             }
         });
@@ -165,15 +166,15 @@ Sell.prototype = {
     MenuHide: function () {
         var that = this;
         $('.up-menu').on('tap', function () {
-                $('#classify').hide();
-                $('.btn-down').removeClass('fa-angle-up').addClass('fa-angle-down');
-                that.num = 1;
+            $('#classify').hide();
+            $('.btn-down').removeClass('fa-angle-up').addClass('fa-angle-down');
+            that.num = 1;
 
         })
     },
-    sellMask: function(){
+    sellMask: function () {
         var that = this;
-        $('.mask').on('click',function(){
+        $('.mask').on('click', function () {
             $(this).hide();
             $('#classify').hide();
             $('.btn-down').removeClass('fa-angle-up').addClass('fa-angle-down');
@@ -200,6 +201,27 @@ Sell.prototype = {
     //         return false;
     //     })
     // }
+    /* 返回顶部的函数 */
+    answerTop: function(){
+        $(window).on('scroll', function(){
+            if(window.pageYOffset > 2500){
+                $('.answer-top').show();
+            }else {
+                $('.answer-top').hide();
+            }
+        })
+        $('.click-up').on('tap',function(){
+            scrollTo(0,0,900);//100毫秒滚动到顶
+        })
+    },
+    stop: function () {
+        document.body.style.overflow = 'hidden';
+        document.addEventListener("touchmove", mo, false); //禁止页面滑动
+    },
+    move: function() {
+        document.body.style.overflow = ''; //出现滚动条
+        document.removeEventListener("touchmove", mo, false);
+    }
 }
 
 //别人使用正则写的获取url地址栏参数的方法
@@ -215,18 +237,24 @@ function getQueryString(name) {
 };
 
 /* 函数的节流 */
-function throttle(method,delay,duration){
-    var timer=null, begin=new Date();
-    return function(){
-        var context=this, args=arguments, current=new Date();;
-        clearTimeout(timer);
-        if(current-begin>=duration){
-             method.apply(context,args);
-             begin=current;
-        }else{
-            timer=setTimeout(function(){
-                method.apply(context,args);
-            },delay);
-        }
-    }
+// function throttle(method, delay, duration) {
+//     var timer = null,
+//         begin = new Date();
+//     return function () {
+//         var context = this,
+//             args = arguments,
+//             current = new Date();;
+//         clearTimeout(timer);
+//         if (current - begin >= duration) {
+//             method.apply(context, args);
+//             begin = current;
+//         } else {
+//             timer = setTimeout(function () {
+//                 method.apply(context, args);
+//             }, delay);
+//         }
+//     }
+// };
+var mo = function (e) {
+    e.preventDefault();
 };
